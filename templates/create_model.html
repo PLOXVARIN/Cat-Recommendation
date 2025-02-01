@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สร้างรุ่น</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <h1>สร้างรุ่นแมวที่เหมาะกับคุณ</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">หน้าแรก</a></li>
+            <li><a href="/create_model">สร้างรุ่น</a></li>
+            <li><a href="/progress">ติดตามความคืบหน้า</a></li>
+            <li><a href="/result">แสดงผลลัพธ์</a></li>
+        </ul>
+    </nav>
+    <main>
+        <form action="/create_model" method="POST">
+            <label for="age">อายุแมวที่ต้องการ (ปี):</label>
+            <input type="number" id="age" name="age" min="1" max="10" required>
+
+            <label for="breed">พันธุ์แมวที่ต้องการ:</label>
+            <select id="breed" name="breed" required>
+                <option value="เปอร์เซีย">เปอร์เซีย</option>
+                <option value="ไทย">ไทย</option>
+                <option value="สก็อตติชโฟลด์">สก็อตติชโฟลด์</option>
+                <option value="เบงกอล">เบงกอล</option>
+                <option value="แร็กดอลล์">แร็กดอลล์</option>
+            </select>
+
+            <label for="color">สีขนที่ต้องการ:</label>
+            <select id="color" name="color" required>
+                <option value="ขาว">ขาว</option>
+                <option value="ดำ">ดำ</option>
+                <option value="เทา">เทา</option>
+                <option value="ลายเสือ">ลายเสือ</option>
+                <option value="น้ำตาล">น้ำตาล</option>
+            </select>
+
+            <label for="weight">น้ำหนักแมวที่ต้องการ (กก.):</label>
+            <input type="number" id="weight" name="weight" min="2.0" max="7.0" step="0.1" required>
+
+            <label for="activity">กิจกรรมที่ชอบ:</label>
+            <select id="activity" name="activity" required>
+                <option value="ชอบเล่น">ชอบเล่น</option>
+                <option value="ชอบนอน">ชอบนอน</option>
+                <option value="ชอบกิน">ชอบกิน</option>
+                <option value="ชอบปีน">ชอบปีน</option>
+                <option value="ชอบสำรวจ">ชอบสำรวจ</option>
+            </select>
+
+            <button type="submit">สร้างรุ่น</button>
+        </form>
+    </main>
+</body>
+</html>

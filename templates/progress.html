@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดตามความคืบหน้า</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <h1>ติดตามความคืบหน้า</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">หน้าแรก</a></li>
+            <li><a href="/create_model">สร้างรุ่น</a></li>
+            <li><a href="/progress">ติดตามความคืบหน้า</a></li>
+            <li><a href="/result">แสดงผลลัพธ์</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <h2>กำลังประมวลผล...</h2>
+            <p>การประมวลผลเสร็จสิ้น! <a href="/result">ดูผลลัพธ์</a></p>
+        </section>
+    </main>
+</body>
+</html>
