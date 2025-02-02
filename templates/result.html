@@ -28,6 +28,10 @@
             <p>ลักษณะนิสัย: {{ best_cat['ลักษณะนิสัย'] }} </p>
             <p>กิจกรรม: {{ best_cat['กิจกรรม'] }}</p>
         </section>
+
+        <form action="{{ url_for('find_new_cat') }}" method="get">
+            <button type="submit">ค้นหาแมวใหม่</button>
+        </form>
     </main>
 </body>
 </html>

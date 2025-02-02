@@ -3,26 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ติดตามความคืบหน้า</title>
+    <title>Progress Tracking</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
-        <h1>ติดตามความคืบหน้า</h1>
+        <h1>Progress Tracking</h1>
     </header>
-    <nav>
-        <ul>
-            <li><a href="/">หน้าแรก</a></li>
-            <li><a href="/create_model">สร้างรุ่น</a></li>
-            <li><a href="/progress">ติดตามความคืบหน้า</a></li>
-            <li><a href="/result">แสดงผลลัพธ์</a></li>
-        </ul>
-    </nav>
     <main>
         <section>
-            <h2>กำลังประมวลผล...</h2>
-            <p>การประมวลผลเสร็จสิ้น! <a href="/result">ดูผลลัพธ์</a></p>
+            <h2>ผลลัพธ์เบื้องต้น</h2>
+            <p>แมวที่เหมาะที่สุด: {{ best_cat }}</p>
+        </section>
+        
+        <section>
+            <h2>กราฟประสิทธิภาพ</h2>
+            <img src="data:image/png;base64,{{ graph_image }}" alt="Performance Graph">
+        </section>
+        
+        <section>
+            <h2>ข้อมูลประสิทธิภาพ</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Generation</th>
+                        <th>Max Fitness</th>
+                        <th>Average Fitness</th>
+                        <th>Processing Time (s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(performance_data['generation']|length) %}
+                    <tr>
+                        <td>{{ performance_data['generation'][i] }}</td>
+                        <td>{{ performance_data['max_fitness'][i] }}</td>
+                        <td>{{ performance_data['avg_fitness'][i] }}</td>
+                        <td>{{ performance_data['processing_time'][i] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </section>
     </main>
 </body>
