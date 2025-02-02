@@ -163,12 +163,23 @@ def progress():
 # หน้าแสดงผลลัพธ์
 @app.route('/find_new_cat', methods=['GET'])
 def find_new_cat():
-    # ใช้ข้อมูลเดิมใน session เพื่อค้นหาแมวใหม่
-    if 'user_preferences' in session:
-        user_preferences = session['user_preferences']
-        best_cat = genetic_algorithm(cats_df, user_preferences)
-        session['best_cat'] = best_cat  # เก็บผลลัพธ์ใหม่ใน session
-    return redirect(url_for('result'))
+    if 'user_preferences' not in session:
+        return redirect(url_for('create_model'))
+    
+    # ใช้ข้อมูลความชอบเดิม
+    user_preferences = session['user_preferences']
+    
+    # ค้นหาแมวใหม่ด้วย GA
+    best_cat, performance_data = genetic_algorithm(cats_df, user_preferences)
+    
+    # อัปเดตผลลัพธ์ใหม่ใน session
+    session['best_cat'] = best_cat
+    
+    # สร้างกราฟประสิทธิภาพ
+    graph_image = plot_performance(performance_data)
+    
+    # แสดงผลลัพธ์ใหม่ในหน้า Progress
+    return render_template('progress.html', best_cat=best_cat, performance_data=performance_data, graph_image=graph_image)
 
 @app.route('/result')
 def result():
