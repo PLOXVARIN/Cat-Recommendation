@@ -3,12 +3,18 @@ import random
 
 # ข้อมูลแมวตัวอย่าง
 cats_data = {
-    'ชื่อ': ['แมวน้อย', 'มิว', 'โบ', 'ซันนี่', 'ลูซี'],
-    'อายุ': [1, 2, 3, 4, 5],
-    'พันธุ์': ['เปอร์เซีย', 'ไทย', 'สก็อตติชโฟลด์', 'เบงกอล', 'แร็กดอลล์'],
-    'สีขน': ['ขาว', 'ดำ', 'เทา', 'ลายเสือ', 'น้ำตาล'],
-    'น้ำหนัก': [3.5, 4.0, 5.5, 6.0, 4.5],
-    'กิจกรรม': ['ชอบเล่น', 'ชอบนอน', 'ชอบกิน', 'ชอบปีน', 'ชอบสำรวจ']
+    'อายุ': [1, 2, 3, 4, 5,1, 2, 3, 4, 5],
+    'พันธุ์': ['สก็อตติชโฟลด์', 'เมนคูน', 'เบงกอล', 'อะบิสซิเนียน', 'เปอร์เซีย', 
+        'ไทย', 'โซมาเลีย', 'อเมริกันช็อตแฮร์', 'บริติชช็อตแฮร์', 'แร็กดอลล์',
+        ],
+    'สีขน': ['ขาว', 'น้ำตาล', 'ลายเสือ', 'ดำ', 'เทาเงิน', 
+        'ส้มขาว', 'ลายจุด', 'น้ำตาลแดง', 'ดำขาว', 'เทา',
+        ],
+    'ลักษณะนิสัย': ['รักความสะอาด' ,'ขี้เล่นและซุกซน' ,'ขี้อ้อน' ,'รักอิสระ'  ,'ฉลาด' ,
+                'ชอบล่าเหยื่อ' ,'นอนหลับเยอะ' ,'แสดงความรัก' ,'สื่อสารด้วยเสียงร้อง' ,'กินอาหารเป็นเวลา'],
+    'กิจกรรม': [ 'ชอบดูทีวี', 'ชอบนอนตากแดด', 'ชอบไล่จับแมลง', 'ชอบเล่นของเล่น', 'ชอบสำรวจ',
+        'ชอบปีนต้นไม้', 'ชอบขุดทราย', 'ชอบวิ่งไล่แสง', 'ชอบซ่อนตัว', 'ชอบเล่นน้ำ',
+        ]
 }
 cats_df = pd.DataFrame(cats_data)
 
@@ -16,22 +22,22 @@ cats_df = pd.DataFrame(cats_data)
 def fitness_function(cat, user_preferences):
     weights = {
         'อายุ': 0.2,
-        'พันธุ์': 0.3,
+        'พันธุ์': 0.2,
         'สีขน': 0.1,
-        'น้ำหนัก': 0.2,
+        'ลักษณะนิสัย': 0.2,
         'กิจกรรม': 0.2
     }
     fitness = 0
     for feature, weight in weights.items():
-        if feature == 'พันธุ์' or feature == 'สีขน' or feature == 'กิจกรรม':
-            if cat[feature] == user_preferences[feature]:
-                fitness += weight
+        if feature in ['พันธุ์', 'สีขน', 'กิจกรรม', 'ลักษณะนิสัย']:  
+            if cat[feature] == user_preferences[feature]:  
+                fitness += weight  
         else:
             fitness += weight * (1 - abs(cat[feature] - user_preferences[feature]) / max(cat[feature], user_preferences[feature]))
     return fitness
 
 # Genetic Algorithm
-def genetic_algorithm(cats_df, user_preferences, population_size=5, generations=10):
+def genetic_algorithm(cats_df, user_preferences, population_size=5, generations=100):
     population = cats_df.to_dict('records')
     
     print("ประชากรเริ่มต้น:")
@@ -74,15 +80,16 @@ def genetic_algorithm(cats_df, user_preferences, population_size=5, generations=
         if random.random() < 0.1:
             feature_to_mutate = random.choice(list(child.keys()))
             if feature_to_mutate == 'อายุ':
-                child[feature_to_mutate] = random.randint(1, 10)
-            elif feature_to_mutate == 'น้ำหนัก':
-                child[feature_to_mutate] = round(random.uniform(2.0, 7.0), 1)
+                child[feature_to_mutate] = random.randint(1, 5)
+            elif feature_to_mutate == 'ลักษณะนิสัย':
+                child[feature_to_mutate] = random.choice(['รักความสะอาด' ,'ขี้เล่นและซุกซน' ,'ขี้อ้อน' ,'รักอิสระ'  ,'ฉลาด' ,'ชอบล่าเหยื่อ' ,'นอนหลับเยอะ' ,'แสดงความรัก' ,'สื่อสารด้วยเสียงร้อง' ,'กินอาหารเป็นเวลา'])
             elif feature_to_mutate == 'พันธุ์':
-                child[feature_to_mutate] = random.choice(['เปอร์เซีย', 'ไทย', 'สก็อตติชโฟลด์', 'เบงกอล', 'แร็กดอลล์'])
+                child[feature_to_mutate] = random.choice(['สก็อตติชโฟลด์', 'เมนคูน', 'เบงกอล', 'อะบิสซิเนียน', 'เปอร์เซีย','ไทย', 'โซมาเลีย', 'อเมริกันช็อตแฮร์', 'บริติชช็อตแฮร์', 'แร็กดอลล์',])
             elif feature_to_mutate == 'สีขน':
-                child[feature_to_mutate] = random.choice(['ขาว', 'ดำ', 'เทา', 'ลายเสือ', 'น้ำตาล'])
+                child[feature_to_mutate] = random.choice(['ขาว', 'น้ำตาล', 'ลายเสือ', 'ดำ', 'เทาเงิน', 
+        'ส้มขาว', 'ลายจุด', 'น้ำตาลแดง', 'ดำขาว', 'เทา',])
             elif feature_to_mutate == 'กิจกรรม':
-                child[feature_to_mutate] = random.choice(['ชอบเล่น', 'ชอบนอน', 'ชอบกิน', 'ชอบปีน', 'ชอบสำรวจ'])
+                child[feature_to_mutate] = random.choice(['ชอบดูทีวี', 'ชอบนอนตากแดด', 'ชอบไล่จับแมลง', 'ชอบเล่นของเล่น', 'ชอบสำรวจ','ชอบปีนต้นไม้', 'ชอบขุดทราย', 'ชอบวิ่งไล่แสง', 'ชอบซ่อนตัว', 'ชอบเล่นน้ำ'])
             
             print(f"\nเกิดการกลายพันธุ์ที่คุณลักษณะ: {feature_to_mutate}")
             print(f"ลูกผสมหลังการกลายพันธุ์: {child}")
@@ -101,11 +108,11 @@ def genetic_algorithm(cats_df, user_preferences, population_size=5, generations=
 
 # ข้อมูลความชอบของผู้ใช้
 user_preferences = {
-    'อายุ': 3,
+    'อายุ': 2,
     'พันธุ์': 'ไทย',
     'สีขน': 'ดำ',
-    'น้ำหนัก': 4.0,
-    'กิจกรรม': 'ชอบเล่น'
+    'ลักษณะนิสัย': 'ขี้เล่นและซุกซน',  # เปลี่ยนเป็นลักษณะนิสัยแทนตัวเลข
+    'กิจกรรม': 'ชอบนอนตากแดด'
 }
 
 # เรียกใช้ Genetic Algorithm
